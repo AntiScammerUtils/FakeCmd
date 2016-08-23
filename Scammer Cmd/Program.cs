@@ -36,12 +36,46 @@ namespace Scammer_Cmd
                     WorkingDirectory = "C:\\"
                 }
             };
-            proc.Start();
-            while (!proc.StandardOutput.EndOfStream)
+            try
             {
-                stdout += proc.StandardOutput.ReadLine() + "\n";
+                proc.Start();
+                while (!proc.StandardOutput.EndOfStream)
+                {
+                    stdout += proc.StandardOutput.ReadLine() + "\n";
+                }
+            } catch (Exception e)
+            {
+                System.Console.WriteLine("'" + CommandName + "' is not recognized as an internal or external command,\noperable program or batch file.");
             }
             return stdout;
+        }
+
+        static void printDirectory(string dir)
+        {
+            if (Directory.Exists(dir))
+            {
+                var dirinfo = new DirectoryInfo(dir);
+                System.Console.WriteLine(" Volume in drive C has no label.");
+                System.Console.WriteLine(" Volume Serial Number is 3G46-57DW\n");
+                System.Console.WriteLine(" Directory of " + dir + "\n");
+                var dirs = dirinfo.EnumerateDirectories();
+                var files = dirinfo.EnumerateFiles();
+                long filessize = 0;
+                foreach(DirectoryInfo directory in dirs)
+                {
+                    System.Console.WriteLine(directory.LastWriteTime + "\t" + "<DIR>\t\t" + directory.Name);
+                }
+                foreach(FileInfo file in files)
+                {
+                    System.Console.WriteLine(file.LastWriteTime + "\t\t" + file.Length + "\t" + file.Name);
+                    filessize += file.Length;
+                }
+                System.Console.WriteLine("\t\t" + files.Count() + " File(s)\t\t\t" + filessize + " bytes");
+            } else
+            {
+                System.Console.WriteLine("EVERYTHING IS BROKEN! GO CRY YOURSELF TO SLEEP! Also this guy is scamming you, he broke it, sue him");
+            }
+            System.Console.WriteLine("\nNo malware or other malicious software found. All clean! PS. Don't give this guy any money, he is a SCAMMER!");
         }
 
         static String processCmd(string cmd)
@@ -57,14 +91,14 @@ namespace Scammer_Cmd
                     break;
                 case "tree":
                     stdout = runExternalCmd(cmd + ".com");
-                    stdout += "\nNo malware or other malicious software found. All clean! PS. Don't give this guy any money";
+                    stdout += "\nNo malware or other malicious software found. All clean! PS. Don't give this guy any money, he is a SCAMMER!";
                     response = stdout;
                     break;
                 case "dir":
-                    var dirinfo = new DirectoryInfo("C:\\");
+                    printDirectory("C:\\Users");
                     break;
                 default:
-                    response = "'" + cmd.Split(' ')[0] + "' is not recognized as an internal or external command,\noperable program or batch file.";
+                    runExternalCmd(cmd);
                     break;
             }
             return response;
