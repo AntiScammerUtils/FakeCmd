@@ -106,7 +106,8 @@ namespace Scammer_Cmd
 
         static void Main(string[] args)
         {
-            // Main Loop
+            // This is all fake, this not a product of Microsoft, nor copyrighted by Microsoft
+            // This is just here to trick scammers
             System.Console.WriteLine("Microsoft Windows [version 10.0.10240]");
             System.Console.WriteLine("(c) 2015 Microsoft Corporation. All rights reserved.\n");
             while (true)
